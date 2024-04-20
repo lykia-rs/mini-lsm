@@ -42,7 +42,7 @@ impl MemTable {
             map: Arc::new(SkipMap::new()),
             wal: None,
             id: _id,
-            approximate_size: Arc::new(AtomicUsize::new(0))
+            approximate_size: Arc::new(AtomicUsize::new(0)),
         }
     }
 
@@ -84,7 +84,10 @@ impl MemTable {
     pub fn put(&self, _key: &[u8], _value: &[u8]) -> Result<()> {
         let key_as_bytes = Bytes::copy_from_slice(_key);
         let value_as_bytes = Bytes::copy_from_slice(_value);
-        self.approximate_size.fetch_add(key_as_bytes.len() + value_as_bytes.len(), std::sync::atomic::Ordering::Relaxed);
+        self.approximate_size.fetch_add(
+            key_as_bytes.len() + value_as_bytes.len(),
+            std::sync::atomic::Ordering::Relaxed,
+        );
         self.map.insert(key_as_bytes, value_as_bytes);
         Ok(())
     }
@@ -98,7 +101,7 @@ impl MemTable {
 
     /// Get an iterator over a range of keys.
     pub fn scan(&self, _lower: Bound<&[u8]>, _upper: Bound<&[u8]>) -> MemTableIterator {
-        unimplemented!()
+        
     }
 
     /// Flush the mem-table to SSTable. Implement in week 1 day 6.
@@ -144,11 +147,10 @@ impl StorageIterator for MemTableIterator {
     type KeyType<'a> = KeySlice<'a>;
 
     fn value(&self) -> &[u8] {
-        unimplemented!()
     }
 
     fn key(&self) -> KeySlice {
-        unimplemented!()
+        
     }
 
     fn is_valid(&self) -> bool {
@@ -156,6 +158,6 @@ impl StorageIterator for MemTableIterator {
     }
 
     fn next(&mut self) -> Result<()> {
-        unimplemented!()
+        
     }
 }

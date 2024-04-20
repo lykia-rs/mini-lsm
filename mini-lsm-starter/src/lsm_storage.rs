@@ -285,7 +285,7 @@ impl LsmStorageInner {
             Arc::clone(&guard)
             // We drop the global lock here
         };
-        
+
         if let Some(val) = snapshot.memtable.get(_key) {
             if val.is_empty() {
                 // Means the key is deleted
@@ -301,8 +301,8 @@ impl LsmStorageInner {
                 }
                 return Ok(Some(val));
             }
-        };
-        return Ok(None)
+        }
+        return Ok(None);
     }
 
     /// Write a batch of data into the storage. Implement in week 2 day 7.
@@ -335,7 +335,7 @@ impl LsmStorageInner {
 
     /// Remove a key from the storage by writing an empty value.
     pub fn delete(&self, _key: &[u8]) -> Result<()> {
-        self.put(_key,&[0_u8; 0])?;
+        self.put(_key, &[0_u8; 0])?;
         Ok(())
     }
 
